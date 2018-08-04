@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/jqpagination.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        GetAllBackupInfo();      
+    });
+
+    function GetAllBackupInfo() {
+        CallServer("all_db_backup_info", {}, function(data){
+            $(".tablelist td").empty();
+            for(i in data.info_list){
+                var info = data.info_list[i];
+                var row = "<tr>";
+                row += "<td>" + info.id + "</td>";
+                row += "<td>" + info.path + "</td>";
+                row += "<td>" + FormatTime(info.time) + "</td>";
+                row += '<td><a href="#" class="tablelink" onclick="DeleteBackup('+info.id+')">删除</a><a> </a>';
+                row += '<a href="#" class="tablelink" onclick="Recover('+info.id+')">恢复</a><a> </a></td>';
+                row += "</tr>";
+
+                $(".tablelist tr:last").after(row);
+            }
+        })
+    }
+
+    function Recover(id) {
+        var pwd=prompt("暗号？","");
+        if(pwd==null)
+            return;
+
+        CallServer("db_recover", {
+            "id":id,
+            "pwd":pwd,
+        }, function(data) {
+            if(!data.err){
+                alert("恢复中");
+                return;
+            }
+            GetAllBackupInfo();
+        })
+    }
+
+    function DeleteBackup(id) {
+        var pwd=prompt("暗号？","");
+        if(pwd==null)
+            return;
+
+        CallServer("db_delete_backup", {
+            "id":id,
+            "pwd":pwd,
+        }, function(data) {
+            GetAllBackupInfo();
+        })
+    }
+
+
+</script>
+
+
+</head>
+
+
+<body>
+
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+        <th>编号</th>
+        <th>备份目录</th>
+        <th>日期</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+    
+    <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+
+</body>
+
+</html>

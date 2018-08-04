@@ -1,0 +1,78 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".dfinput").css({
+            width : 150,
+            height: 35,
+        });  
+    });
+    var clusters = {};
+    var types = {};
+    function ClusterTable(conf) {
+        var str = '<table type="table">';
+        str = str + '<tr><td>名字</td><td><input type="text" name="" value="{name}"></td></tr>';
+        str = str + '<tr><td>名字</td><td><input type="text" name="" value="{name}"></td></tr>';
+        str = str + '</table>';
+        str.Format(conf);
+        // $("#table_list").append('str');
+        $("#table_list").append("<p>hello</p>");
+    }
+    function Update(){
+        $("#table_list").remove();
+        ClusterTable({
+            name:"主节点",
+            extranet:"dev.zhongfq.com",
+            intranet:"0.0.0.0"
+        });
+    }
+
+    Update();
+</script>
+
+
+</head>
+
+
+<body>
+    <label style="font-size:20pt;margin-top:185px">集群配置</label>
+    <br>
+    <br>
+    <div id="table_list">
+<!--         <table >
+          <tr>
+            <td>名字</td>
+            <td><input type="text" name="" value="主节点"></td>
+          </tr>
+          <tr>
+            <td>操作</td>
+            <td><a href="xxx">保存&nbsp</a><a href="xxx">删除</a></td>
+          </tr>
+        </table>
+        <br>
+
+        <table >
+          <tr>
+            <td>名字</td>
+            <td><input type="text" name="" value="主节点"></td>
+          </tr>
+          <tr>
+            <td>操作</td>
+            <td><a href="xxx">保存&nbsp</a><a href="xxx">删除</a></td>
+          </tr>
+        </table> -->
+    </div>
+    <br>
+    <a href="xxx">新建</a>
+    <a href="xxx">保存</a>
+    
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });
+        GetAnnounce();
+    });
+
+    function GetAnnounce() {
+        CallServer("get_announce", {}, function(data) {
+            $('#announce').val(data.announce);
+        })        
+    }
+
+    function SetAnnounce() {
+        CallServer("set_announce", {announce:$('#announce').val()}, function() {
+            alert("设置成功");
+        });
+    }
+
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+
+    <ul class="forminfo">
+    <li><label>操作</label><input name="" type="button" class="btn" onclick="SetAnnounce()" value="修改"/></li>
+
+    <li><label>公告</label><textarea id="announce" cols="" rows="" class="textinput"></textarea></li>
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

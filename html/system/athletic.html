@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/jqpagination.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    function Refresh(athletic_list) {
+        $(".tablelist td").empty();
+        for (i in athletic_list){
+            athletic = athletic_list[i]
+
+            var row = '<tr id="row_'+i+'">';
+            row += '<td><label>'+ i + '</label></td>';
+            row += '<td><label>'+ athletic.player_name + '</label></td>';
+            row += '<td><label>'+ athletic.level + '</label></td>';
+            row += '<td><label>'+ athletic.gs + '</label></td>';
+            if(athletic.is_robot){
+                row += '<td><label>是</label></td>';
+            }else{
+                row += '<td><label>否</label></td>';
+            }
+            row += '<td><a href="#" class="tablelink" onclick="Detail('+athletic.player_id+')">查看</a></td>';                
+
+            row += '</tr>';
+            $(".tablelist tr:last").after(row);
+        }
+    }
+
+    function GetAthleticList(){
+        CallServer("athletic_list", {
+            "server_id":$("#server_str").val(),
+            "start_idx":$("#start_idx").val(),
+            "end_idx":$("#end_idx").val(),
+        }, function(data) {
+            Refresh(data.athletic_list);
+        });
+    }
+
+    function Detail(player_id) {
+        location.href = "../player/player_data.html?player_id="+player_id;
+    }
+
+    $(document).ready(function(){
+
+        $(".dfinput").css({
+            width : 100,
+            height : 30
+        });
+    });
+
+    
+
+
+</script>
+
+
+</head>
+
+
+<body>
+
+    <div class="rightinfo">
+    <li>
+    <label>服务器id&nbsp;</label>
+    <input id="server_str" type="text" class="dfinput" placeholder="1" value="1" />
+    <label>排名&nbsp;</label>
+    <input id="start_idx" type="text" class="dfinput" placeholder="" value="1" />
+    <label>排名&nbsp;</label>
+    <input id="end_idx" type="text" class="dfinput" placeholder="" />
+    <input id="update_btn" type="button" class="btn" value="查询" onclick="GetAthleticList()" />
+    </li>
+
+    <li><label>&nbsp;</label></li>
+
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+        <th>排名</th>
+        <th>角色名</th>
+        <th>等级</th>
+        <th>战力</th>
+        <th>机器人</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+    
+    <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+
+</body>
+
+</html>

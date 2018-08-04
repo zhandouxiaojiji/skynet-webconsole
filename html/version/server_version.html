@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+<style type="text/css"> 
+    body,table{ 
+    font-size:12px; 
+    } 
+    table{ 
+    table-layout:fixed; 
+    empty-cells:show; 
+    border-collapse: collapse; 
+    /*margin:0 auto; */
+    } 
+    td{ 
+    height:30px; 
+    } 
+    h1,h2,h3{ 
+    font-size:12px; 
+    margin:0; 
+    padding:0; 
+    } 
+    .table{ 
+    border:1px solid #cad9ea; 
+    color:#666; 
+    } 
+    .table th { 
+    background-repeat:repeat-x; 
+    height:30px; 
+    } 
+    .table td,.table th{ 
+    border:1px solid #cad9ea; 
+    padding:0 1em 0; 
+    } 
+    .table tr.alter{ 
+    background-color:#f5fafe; 
+    } 
+</style> 
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".dflabel").css({
+            width : 150,
+            height: 35,
+        });  
+        // Refresh();
+        Load();
+    });
+   
+    var clusters = {};
+    var types = {};
+    function ClusterTable(conf) {
+        var str = '<br><table class="table">';
+        str = str + '<tr><td>名字</td><td>{name}</td></tr>';
+        str = str + '<tr><td>描述</td><td>{desc}</td></tr>';
+        str = str + '<tr><td>数据库名称</td><td>{db_name}</td></tr>';
+        str = str + '<tr><td>数据库地址</td><td>{db_host}</td></tr>';
+        str = str + '<tr><td>数据库端口</td><td>{db_port}</td></tr>';
+
+        str = str + '<tr><td>操作</td><td>';
+        str = str + '<a href="#" style="margin-left:0px" onclick=\'Dispose("{name}")\'>部署</a>';
+        str = str + '<a href="#" style="margin-left:5px" onclick=\'Update("{name}")\'>更新</a>';
+        str = str + '</td></tr>'
+
+        str = str + '</table>';
+        str = str.Format(conf);
+        $("#table_list").append(str);
+    }
+    function Refresh(){
+        $("#table_list").empty();
+        for (var k in clusters) {
+            ClusterTable(clusters[k]);
+        }
+    }
+
+    function Update(name){
+        CallServer("update_cluster", {name:name}, function(data){
+            Load();
+        });
+    }
+
+    function Dispose(name){
+        CallServer("dispose_cluster", {name:name}, function(data){
+            Load();
+        });
+
+    }
+
+    function Load(){
+        CallServer("get_cluster_conf", {}, function(data){
+            clusters = data;
+            Refresh();
+        });
+    }
+    
+
+</script>
+
+
+</head>
+
+
+<body>
+    <label style="font-size:20pt;margin-top:185px">游戏配置</label>
+    <br>
+    <div id="table_list"></div>
+    <br>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".dfinput").css({
+            width : 150,
+            height: 35,
+        });  
+        GetClientVersion();      
+    });
+
+    function GetClientVersion() {
+        CallServer("client_version", {}, function(data){
+            $("#cur_client_version").text("当前版本："+data.cur_client_version);
+            $("#new_client_version").val(data.new_client_version);
+            $("#pack_btn").val("打包");
+        })
+    }
+
+    var packing = false;
+    function Pack() {
+        if(packing){
+            alert("正在打包中，公主稍安勿躁~");
+            return;
+        }
+        CallServer("pack_client_version", {
+            "new_client_version":$("#new_client_version").val(),
+        }, function(data) {
+            if(data.err){
+                alert("打包失败:"+data.err);
+                return;
+            }
+            packing = false;
+            GetClientVersion();
+        });
+        $("#pack_btn").val("打包中...");
+        packing = true;
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    <div class="formbody">
+
+    <li>
+        <label id="cur_client_version" style="font-size:19pt">当前版本:1.0.0</label>
+    </li>
+    <li style="margin-top:15px">
+        <input id="new_client_version" type="text" class="dfinput" placeholder="1.0.0" />
+        <input id="pack_btn" type="button" class="btn" value="打包" onclick="Pack()" />
+    </li>
+
+
+
+    </div>    
+    
+
+
+
+
+
+</body>
+
+</html>

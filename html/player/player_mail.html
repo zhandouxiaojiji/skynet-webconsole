@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 820
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });          
+    });
+
+    function GetPlayerData() {
+        CallServer("get_player_data", {
+            "player_id":$("#player_id").val(),
+            "account":$("#account").val(),
+            "player_name":$("#player_name").val(),
+        }, function(data) {
+            if(data.err) {
+                alert(data.err);
+                return;
+            }
+            $('#player_id').val(data.user.player_id);
+            $('#player_name').val(data.user.player_name);
+            $('#account').val(data.user.account);
+            $('#server_id').val(data.user.server_id);
+
+        });
+    }
+
+    function SendMail() {
+        CallServer("send_mail_to_player", {
+            "player_id":$("#player_id").val(),
+            "sender_name":$("#sender_name").val(),
+            "title":$("#title").val(),
+            "content":$("#content").val(),
+            "item_list":$("#item_list").val(),
+            "server_id":$("#server_id").val(),
+        }, function(data) {
+            if(data.err) {
+                alert(data.err);
+                return;
+            }else {
+                alert("发送成功");
+            }
+        });
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+
+    <ul class="forminfo">
+    <li><label>操作</label><input id="update_btn" type="button" class="btn" value="查询" onclick="GetPlayerData()" />
+    <input name="" type="button" class="btn" value="发送" onclick="SendMail()" /></li>
+
+    <li><label>玩家id</label><input id="player_id" type="text" class="dfinput" placeholder="10086" /></li>
+    <li><label>角色名</label><input id="player_name" type="text" class="dfinput" placeholder="战斗小鸡鸡" /></li>
+    <li><label>账号名</label><input id="account" type="text" class="dfinput" placeholder="account" /></li>
+    <li><label>服务器id</label><input id="server_id" type="text" class="dfinput" placeholder="1" /></li>
+
+
+    <li><label>发件人</label><input id="sender_name" type="text" class="dfinput" placeholder="发件人" value="系统" /></li>
+    <li><label>标题</label><input id="title" type="text" class="dfinput" placeholder="标题" /></li>
+    <li><label>物品</label><input id="item_list" type="text" class="dfinput" placeholder="10001 1 10001 10" /></li>
+    <li><label>正文</label><textarea id="content" cols="" rows="" class="textinput"></textarea></li>
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/jqpagination.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    function Refresh(rank_list) {
+        $(".tablelist td").empty();
+        for (i in rank_list){
+            rank = rank_list[i]
+
+            var row = '<tr id="row_'+i+'">';
+            row += '<td><label>'+ i + '</label></td>';
+            row += '<td><label>'+ rank.player_name + '</label></td>';
+            row += '<td><label>'+ rank.level + '</label></td>';
+            row += '<td><label>'+ rank.gs + '</label></td>';
+            if(rank.is_robot){
+                row += '<td><label>是</label></td>';
+            }else{
+                row += '<td><label>否</label></td>';
+                row += '<td><a href="#" class="tablelink" onclick="Detail('+rank.player_id+')">查看</a></td>';                
+            }
+
+            row += '</tr>';
+            $(".tablelist tr:last").after(row);
+        }
+    }
+
+    function GetRankList(rank_name){
+        CallServer("rank_list", {
+            "server_id":$("#server_str").val(),
+            "rank_name":rank_name,
+        }, function(data) {
+            Refresh(data.rank_list);
+        });
+    }
+
+    function Detail(player_id) {
+        location.href = "../player/player_data.html?player_id="+player_id;
+    }
+
+    $(document).ready(function(){
+
+        $(".dfinput").css({
+            width : 100,
+            height : 30
+        });
+    });
+
+    
+
+
+</script>
+
+
+</head>
+
+
+<body>
+
+    <div class="rightinfo">
+    <li>
+    <label>服务器id&nbsp;</label>
+    <input id="server_str" type="text" class="dfinput" placeholder="1" value="1" />
+    <input id="update_btn" type="button" class="btn" value="等级排名" onclick='GetRankList("level")' />
+    <input id="update_btn" type="button" class="btn" value="战力排名" onclick='GetRankList("gs")' />
+    <input id="update_btn" type="button" class="btn" value="竞技排名" onclick='GetRankList("athletic")' />
+    </li>
+
+    <li><label>&nbsp;</label></li>
+
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+        <th>排名</th>
+        <th>角色名</th>
+        <th>等级</th>
+        <th>战力</th>
+        <th>机器人</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+    
+    <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+
+</body>
+
+</html>

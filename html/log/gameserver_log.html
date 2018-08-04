@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 820
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });          
+    });
+
+    var cursor_line = 0;
+    var updating = false;
+    var timer;
+    function Update() {
+        CallServer("monitor_gameserver_log", {
+            "cursor_line":cursor_line,
+            "server_id":$("#server_id").val(),
+            "date":$("#date").val(),
+        }, function(data) {
+            if(data.err){
+                alert("日志不存在");
+                Show();
+                return;
+            }
+            cursor_line = data.cursor_line;
+            var content = $("#content");
+            var new_log = data.new_log;
+            var old_log = content.text();
+            content.text(old_log + new_log);
+            content.scrollTop = content.scrollHeight;
+            var obj = document.getElementById("content"); 
+
+            obj.scrollTop = obj.scrollHeight; 
+        })
+    }
+    function Show() {
+        updating = !updating;
+        if(updating){
+            Update();
+            timer = window.setInterval(Update,500);
+            $("#update_btn").val("停止");
+        }else{
+            window.clearInterval(timer); 
+            $("#update_btn").val("滚动");
+        }
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+
+    <ul class="forminfo">
+    <li><label>操作</label><input id="update_btn" type="button" class="btn" value="滚动" onclick="Show()" />
+    <input name="" type="button" class="btn" value="下载" onclick="Download()" /></li>
+    <li><label>服务器id</label><input id="server_id" type="text" class="dfinput" placeholder="10086" value="1" /></li>
+    <li><label>日期</label><input id="date" type="text" class="dfinput" placeholder="20161111-20161117" /></li>
+
+
+    <li><label>日志</label><textarea id="content" cols="" rows="" class="textinput"></textarea></li>
+    </ul>
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

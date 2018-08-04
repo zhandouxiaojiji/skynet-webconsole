@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        GetActivityList();      
+    });
+    var activity_list;
+    function GetActivityList() {
+        CallServer("activity_list", {}, function(data){
+            activity_list = data.activity_list;
+            $(".tablelist td").empty();
+            for(i in data.activity_list){
+                var activity = data.activity_list[i];
+                var row = "<tr>";
+                row += "<td>" + activity.name + "</td>";
+                row += '<td><input id="'+i+'_begin" type="text" placeholder="2017/2/28/23" value = "'+activity.begin_time+'" /></td>'
+                row += '<td><input id="'+i+'_end" type="text" placeholder="2017/2/28/23" value = "'+activity.end_time+'" /></td>'
+                row += '<td><a href="#" class="tablelink" onclick="SetActivityTime('+i+')">设置</a><a> </a></td>';
+                row += "</tr>";
+
+                $(".tablelist tr:last").after(row);
+            }
+        })
+    }
+
+    function SetActivityTime(idx) {
+
+        CallServer("set_activity_time", {
+            name:activity_list[idx].name,
+            begin_time:$("#"+idx+"_begin").val(),
+            end_time:$("#"+idx+"_end").val(),
+        }, function(data) {
+            alert("设置完成");
+        })
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <table class="tablelist">
+        <thead>
+        <tr>
+        <th>活动名称</th>
+        <th>开启日期</th>
+        <th>结束日期</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+
+
+
+
+
+</body>
+
+</html>

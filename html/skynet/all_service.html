@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    var service_list;
+    var service_id_list = [];
+    function UpdateServiceIdList() {
+        service_id_list = [];
+        for(var i in service_list){
+            var service = service_list[i];
+            if($("#checkbox_"+service.id).attr('checked')){
+                service_id_list.push(service.id);
+            }
+        }
+    }
+    function GetServiceList() {
+        CallServer("all_service_list", {}, function(data) {
+            service_list = data.service_list;
+            Refresh();
+        });
+    }
+    function GC(i) {
+        CallServer("service_gc", {
+            "addr":service_list[i].addr
+        }, function(data) {
+            alert("GC完成");
+            GetServiceList();
+        });
+    }
+    function AllGC() {
+        CallServer("service_gc_all", {}, function(data) {
+            alert("所有服务GC完成");
+            GetServiceList();
+        });
+    }
+
+    function Refresh(selector) {
+        $(".tablelist td").empty();
+        for (i in service_list){
+            service = service_list[i]
+
+            var row = '<tr id="row_'+i+'">';
+            row += '<td><label><input id="checkbox_'+service.id+'" type="checkbox" value="">';
+            row += '<td><label>'+service.address+'</label></td>';
+
+            
+            row += '<td class="text-muted">'+service.desc+'</td>';
+                
+            row += '<td>'+service.mem+'</td>';
+
+            row += '<td>'+service.mqlen+'</td>';
+            row += '<td>'+service.task+'</td>';
+
+            row += '<td>';
+
+            row += '<a href="#" class="tablelink" onclick="GC('+i+')">GC</a><a> </a>';
+                
+            row += '</td>';
+
+            row += '</tr>';
+
+            if(!selector || (selector == "select_all")||(selector == "select_runing" && service.gameservice)||
+                (selector == "select_not_merge" && service.merge == 0)||(selector == "select_merge" && service.merge != 0)){
+                $(".tablelist tr:last").after(row);
+                if(selector){
+                    $("#checkbox_"+service.id).attr("checked",true);
+                }
+            }
+        }
+    }
+
+    $(document).ready(function(){
+        GetServiceList();
+
+    });
+
+</script>
+
+
+</head>
+
+
+<body>
+
+    <div class="rightinfo">
+    
+    <div class="tools">
+    
+        <ul class="toolbar">
+        <li class="click" id="refresh_service" onclick="GetServiceList()"><span><img src="../../images/button/refresh.png" /></span>刷新</li>
+        <li class="click" id="gc_all_service" onclick="AllGC()"><span><img src="../../images/button/reload.png" /></span>GC</li>
+        </ul>
+    
+    </div>
+    
+    
+    <table class="tablelist">
+        <thead>
+        <tr>
+        <th><input name="" type="checkbox" value="" checked="checked"/></th>
+        <th>地址</th>
+        <th>描述</th>
+        <th>内存</th>
+        <th>消息列队</th>
+        <th>请求量</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+    
+   
+    <div class="pagin">
+        <div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
+        <ul class="paginList">
+        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
+        <li class="paginItem"><a href="javascript:;">1</a></li>
+        <li class="paginItem current"><a href="javascript:;">2</a></li>
+        <li class="paginItem"><a href="javascript:;">3</a></li>
+        <li class="paginItem"><a href="javascript:;">4</a></li>
+        <li class="paginItem"><a href="javascript:;">5</a></li>
+        <li class="paginItem more"><a href="javascript:;">...</a></li>
+        <li class="paginItem"><a href="javascript:;">10</a></li>
+        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+        </ul>
+    </div>
+    
+    
+    <div class="tip">
+        <div class="tiptop"><span>提示信息</span><a></a></div>
+        
+      <div class="tipinfo">
+        <span><img src="../../images/ticon.png" /></span>
+        <div class="tipright">
+        <p>是否确认对信息的修改 ？</p>
+        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+        </div>
+        </div>
+        
+        <div class="tipbtn">
+        <input name="" type="button"  class="sure" value="确定" />&nbsp;
+        <input name="" type="button"  class="cancel" value="取消" />
+        </div>
+    
+    </div>
+    
+    
+    
+    
+    </div>
+    
+    <script type="text/javascript">
+    $('.tablelist tbody tr:odd').addClass('odd');
+    </script>
+
+</body>
+
+</html>

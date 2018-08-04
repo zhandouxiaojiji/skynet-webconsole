@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/jqpagination.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    var server_list;
+    var server_id_list = [];
+    function UpdateServerIdList() {
+        server_id_list = [];
+        for(var i in server_list){
+            var server = server_list[i];
+            if($("#checkbox_"+server.id).attr('checked')){
+                server_id_list.push(server.id);
+            }
+        }
+    }
+    function GetServerList() {
+        CallServer("server_list", {}, function(data) {
+            server_list = data.server_list;
+            $("#profile").text(data.profile);
+            Refresh();
+        });
+    }
+
+    function OpenServer(server_id_list) {
+        CallServer("open_server", {"server_id_list":server_id_list}, function(data) {
+            if(data.err)
+                alert(data.err);
+            else{
+                alert("服务器已开放");
+                GetServerList();
+            }
+        });
+    }
+    function Detail(server_id) {
+        location.href = "server_data.html?server_id="+server_id;
+    }
+
+    function CloseServer(server_id_list) {
+        CallServer("close_server", {"server_id_list":server_id_list}, function(data) {
+            alert("服务器已禁用!");
+            GetServerList();
+        });
+    }
+
+    function StartServer(server_id_list) {
+        CallServer("start_server", {"server_id_list":server_id_list}, function(data) {
+            alert("服务器已启动!");
+            GetServerList();
+        });
+    }
+
+    function StopServer(server_id_list) {
+        CallServer("stop_server", {"server_id_list":server_id_list}, function(data) {
+            alert("服务器已关闭!");
+            GetServerList();
+        });
+    }
+
+    function RestartServer(server_id_list) {
+        CallServer("restart_server", {"server_id_list":server_id_list}, function(data) {
+            alert("服务器已重启!");
+            GetServerList();
+        });
+    }
+
+    function ServerGm(server_id_list) {
+        location.href = "server_gm.html?server_str="+server_id_list.join(' ');
+    }
+
+    function Refresh(selector) {
+        $(".tablelist td").empty();
+        for (i in server_list){
+            server = server_list[i];
+
+            var row = '<tr id="row_'+i+'">';
+            row += '<td><label><input id="checkbox_'+server.id+'" type="checkbox" value="">';
+            row += '<td><label>'+server.id+'服 '+server.name+'</label></td>';
+
+            if(server.service != null){
+                row += '<td style="color:green">正在运行</td>';
+            }
+            else{
+                row += '<td class="text-muted">未启动</td>';
+            }
+
+            row += '<td>在线:'+server.online+'</td>';
+            row += '<td><label>2016-11-14</label></td>';
+            if(!server.open){
+                row += '<td class="text-muted" style="color:gray"><i>未开服</i></td>';
+            }else if(server.merge == 0){
+                row += '<td style="color:orange">未合服</td>';
+            }else{
+                row += '<td class="text-warning">已合服至"'+server.merge+'"服</td>';
+            }
+            row += '<td>';
+                row += '<a href="#" class="tablelink" onclick="Detail('+server.id+')">查看</a><a> </a>';
+                row += '<a href="#" class="tablelink" onclick="OpenServer(['+server.id+'])">开服</a><a> </a>';
+                row += '<a href="#" class="tablelink" onclick="CloseServer(['+server.id+'])">禁用</a><a> </a>';
+                row += '<a href="#" class="tablelink" onclick="ServerGm(['+server.id+'])">GM</a><a> </a>';
+                
+            row += '</td>';
+
+            row += '</tr>';
+
+            if(!selector || (selector == "select_all")||(selector == "select_runing" && server.service)||
+                (selector == "select_not_merge" && server.merge == 0)||(selector == "select_merge" && server.merge != 0)){
+                $(".tablelist tr:last").after(row);
+                if(selector){
+                    $("#checkbox_"+server.id).attr("checked",true);
+                }
+            }
+        }
+    }
+
+    var selected = false;
+    function SelectRunning(){
+        selected = !selected;
+        if (selected){
+            Refresh("select_runing");            
+        }else{
+            Refresh();
+        }
+    }
+
+    $(document).ready(function(){
+        $("#start_server").click(function() {
+            UpdateServerIdList();
+            StartServer(server_id_list);            
+        });
+        $("#stop_server").click(function() {
+            UpdateServerIdList();
+            StopServer(server_id_list);
+        });
+        $("#restart_server").click(function() {
+            UpdateServerIdList();
+            RestartServer(server_id_list);
+        });
+
+        $("#refresh_server").click(function() {
+            GetServerList();
+            alert("已刷新");
+        });
+
+        $("#gm_server").click(function() {
+            UpdateServerIdList();
+            ServerGm(server_id_list);
+        });
+
+        $("#profile").css({
+            'font-size' : 20,
+            'line-height': 2        
+        });
+
+        GetServerList();
+
+    });
+
+</script>
+
+
+</head>
+
+
+<body>
+
+    <div class="rightinfo">
+    
+    <div class="tools">
+    
+    	<ul class="toolbar">
+        <li class="click" id="refresh_server"><span><img src="../../images/button/refresh.png" /></span>刷新</li>
+        <li class="click" id="start_server"><span><img src="../../images/button/start.png" /></span>启动</li>
+        <li class="click" id="stop_server"><span><img src="../../images/button/stop.png" /></span>关闭</li>
+        <li class="click" id="restart_server"><span><img src="../../images/button/restart.png" /></span>重启</li>
+        <li class="click" id="gm_server"><span><img src="../../images/button/reload.png" /></span>GM指令</li>
+        </ul>
+        <li><label id="profile"></label></li>
+    
+    </div>
+    
+    
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+        <th><input name="select_runing" type="checkbox" value="" onclick='SelectRunning();'/></th>
+        <th>服务器名称</th>
+        <th>状态</th>
+        <th>在线</th>
+        <th>开服日期</th>
+        <th>合服情况</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+           
+        </tbody>
+    </table>
+    
+   
+    <div class="pagin">
+
+    </div>
+    
+    
+    <div class="tip">
+    	<div class="tiptop"><span>提示信息</span><a></a></div>
+        
+      <div class="tipinfo">
+        <span><img src="../../images/ticon.png" /></span>
+        <div class="tipright">
+        <p>是否确认对信息的修改 ？</p>
+        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+        </div>
+        </div>
+        
+        <div class="tipbtn">
+        <input name="" type="button"  class="sure" value="确定" />&nbsp;
+        <input name="" type="button"  class="cancel" value="取消" />
+        </div>
+    
+    </div>
+    
+<!--     <div class="gigantic pagination">
+        <a href="#" class="first" data-action="first">&laquo;</a>
+        <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+        <input type="text" readonly="readonly" />
+        <a href="#" class="next" data-action="next">&rsaquo;</a>
+        <a href="#" class="last" data-action="last">&raquo;</a>
+    </div> -->
+
+    
+    <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+
+</body>
+
+</html>

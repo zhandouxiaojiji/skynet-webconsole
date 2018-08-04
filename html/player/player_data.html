@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 200
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        }); 
+        var player_id = getParam("player_id");
+        $("#search_id").val(player_id);
+        if(player_id != ""){
+            GetPlayerData();
+        }
+    });
+
+    function GetPlayerData() {
+        CallServer("get_player_data", {
+            "player_id":$("#search_id").val(),
+            "account":$("#search_account").val(),
+            "player_name":$("#search_name").val(),
+        }, function(data) {
+            if(data.err) {
+                alert(data.err);
+                return;
+            }
+            $('#player_id').text(data.user.player_id);
+            $('#player_name').text(data.user.player_name);
+            $('#account').text(data.user.account);
+            $('#level').text(data.user.level);
+            $('#exp').text(data.user.exp);
+            $('#gold').text(data.user.gold);
+            $('#pay_gold').text(data.user.pay_gold);
+            $('#silver').text(data.user.silver);
+            $('#power').text(data.user.power);
+            $('#guild_id').text(data.user.guild_id);
+            $('#guild_name').text(data.user.guild_name);
+            $('#guild_position').text(data.user.guild_position);
+            $('#last_login_time').text(FormatTime(data.user.last_login_time));
+
+        });
+        
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+    
+
+
+    <ul class="forminfo">
+        <ul class="seachform">
+
+            <label>玩家ID</label><input id="search_id" type="text" class="dfinput" placeholder="" />
+            <label>角色名</label><input id="search_name" type="text" class="dfinput" placeholder="" />
+            <label>账号名</label><input id="search_account" type="text" class="dfinput" placeholder="" />
+
+            <label>&nbsp;</label><input name="" type="button" class="scbtn" onclick="GetPlayerData()" value="查询"/>
+
+        </ul>
+
+
+         <li><label style="font-size:20px">基本信息</label></li>
+         <li><label>玩家ID</label><label style="color:gray" id="player_id"></label></li>
+         <li><label>账号</label><label style="color:gray" id="account"></label></li>
+         <li><label>角色名</label><label style="color:gray" id="player_name"></label></li>
+         <li><label>等级</label><label style="color:gray" id="level"></label></li>
+         <li><label>经验</label><label style="color:gray" id="exp"></label></li>
+         <li><label>元宝</label><label style="color:gray" id="gold"></label></li>
+         <li><label>充值元宝</label><label style="color:gray" id="pay_gold"></label></li>
+         <li><label>金币</label><label style="color:gray" id="silver"></label></li>
+         <li><label>体力</label><label style="color:gray" id="power"></label></li>
+         <li><label>公会ID</label><label style="color:gray" id="guild_id"></label></li>
+         <li><label>公会</label><label style="color:gray" id="guild_name"></label></li>
+         <li><label>公会职位</label><label style="color:gray" id="guild_position"></label></li>
+         <li><label>上次登陆</label></li><label style="color:gray" id="last_login_time"></label>
+
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

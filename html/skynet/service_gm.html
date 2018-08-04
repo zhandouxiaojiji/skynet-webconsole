@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 820
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });
+    });
+
+    function ExecuteGm (){
+        CallServer("service_gm", {
+            "server_str":$("#server_str").val(),
+            "gmcmd":$("#gmcmd").val(),
+            "arg1":$("#arg1").val(),
+            "arg2":$("#arg2").val(),
+            "arg3":$("#arg3").val(),
+        }, function(data) {
+            alert(data.ret);
+        });
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+
+    <ul class="forminfo">
+    <li><label>服务地址</label><input id="server_str" type="text" class="dfinput" placeholder="1 2 3" value="1" /></li>
+    <li><label>指令</label><input id="gmcmd" type="text" class="dfinput" placeholder="reload" value="test_async" /></li>
+    <li><label>参数1</label><input id="arg1" type="text" class="dfinput" placeholder="12138" value="test1"/></li>
+    <li><label>参数2</label><input id="arg2" type="text" class="dfinput" placeholder="12138" value="test2" /></li>
+    <li><label>参数3</label><input id="arg3" type="text" class="dfinput" placeholder="12138" /></li>
+
+    <li><label>操作</label><input id="update_btn" type="button" class="btn" value="执行" onclick="ExecuteGm()" /></li>
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

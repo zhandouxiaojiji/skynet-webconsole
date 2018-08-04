@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 820
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });        
+    });
+
+    function QueryDB() {
+        var query = $("#query").val();
+        var selector = $("#selector").val();
+        var collection_name = $("#collection_name").val();
+        if(collection_name.indexOf("数据库")>0){
+            alert("请选择数据表");
+            return;
+        }
+        $("#result").text("");
+        CallServer("query_db", {
+            "collection_name":collection_name,
+            "query":query,
+            "selector":selector,
+        }, function(data) {
+            $("#result").text(JSON.stringify(data.result, null, 2));
+            test();
+        })
+    }
+    function UpdateDB() {
+
+    }
+
+    function test()  
+    {  
+        var obj = document.getElementById("result");  
+        obj.scrollTop = obj.scrollHeight; // good  
+    }  
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+    
+    
+    
+
+
+    <ul class="forminfo">
+    <li><label>操作</label><input name="" type="button" class="btn" value="更新"/>
+    <input name="" type="button" class="btn" value="查询" onclick="QueryDB()" /></li>
+
+    <li><label>数据表</label>  
+    <div class="vocation">
+    <select id="collection_name" class="select3">
+    <option>account</option>
+    <option>base</option>
+    <option>gameserver</option>
+    <option>warserver</option>
+    <option>guild</option>
+    <option>operate</option>
+    <option>player</option>
+    <option>server_config</option>
+    </select>
+    </div>
+    </li>
+
+    <li><label>查询条件</label><input id="query" type="text" class="dfinput" placeholder="查询条件(a=1, b=1)" /></li>
+    <li><label>筛选条件</label><input id="selector" type="text" class="dfinput" placeholder="筛选条件(a=1, b=1)" /></li>
+
+
+    <li><label>查询结果</label><textarea id="result" cols="" rows="" class="textinput"></textarea></li>
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

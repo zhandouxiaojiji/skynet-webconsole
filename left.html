@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+$(function(){	
+	//导航切换
+	$(".menuson li").click(function(){
+		$(".menuson li.active").removeClass("active")
+		$(this).addClass("active");
+	});
+	
+	$('.title').click(function(){
+		var $ul = $(this).next('ul');
+		$('dd').find('ul').slideUp();
+		if($ul.is(':visible')){
+			$(this).next('ul').slideUp();
+		}else{
+			$(this).next('ul').slideDown();
+		}
+	});
+})	
+</script>
+
+
+</head>
+
+<body style="background:#f0f9fd;">
+    <dl class="leftmenu">
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>服务器管理
+    </div>
+    	<ul class="menuson">
+        <li class="active"><cite></cite><a href="html/server/server_list.html" target="rightFrame">服务器列表</a><i></i></li>
+        <li><cite></cite><a href="html/server/server_data.html" target="rightFrame">单服数据</a><i></i></li>
+        <li><cite></cite><a href="html/server/announce.html" target="rightFrame">公告</a><i></i></li>
+        <li><cite></cite><a href="html/server/server_gm.html" target="rightFrame">GM</a><i></i></li>
+        </ul>    
+    </dd>
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>系统管理
+    </div>
+        <ul class="menuson">
+        <li class="active"><cite></cite><a href="html/system/activity.html" target="rightFrame">活动开放</a><i></i></li>
+        <li><cite></cite><a href="html/system/athletic.html" target="rightFrame">竞技场</a><i></i></li>
+        <li><cite></cite><a href="html/system/rank.html" target="rightFrame">排行榜</a><i></i></li>
+        </ul>    
+    </dd>
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>玩家管理
+    </div>
+        <ul class="menuson">
+        <li><cite></cite><a href="html/player/player_data.html" target="rightFrame">玩家数据</a><i></i></li>
+        <li><cite></cite><a href="html/player/consume_record.html" target="rightFrame">消费记录</a><i></i></li>
+        <li><cite></cite><a href="html/player/announce_mail.html" target="rightFrame">群发邮件</a><i></i></li>
+        <li><cite></cite><a href="html/player/player_mail.html" target="rightFrame">单发邮件</a><i></i></li>
+        <li><cite></cite><a href="html/player/ban.html" target="rightFrame">封号</a><i></i></li>
+        </ul>    
+    </dd>
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>版本管理
+    </div>
+        <ul class="menuson">
+        <li><cite></cite><a href="html/version/client_version.html" target="rightFrame">客户端版本</a><i></i></li>
+        <li><cite></cite><a href="html/version/server_version.html" target="rightFrame">服务器版本</a><i></i></li>
+        </ul>    
+    </dd>
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>日志管理
+    </div>
+        <ul class="menuson">
+        <li><cite></cite><a href="html/log/player_log.html" target="rightFrame">玩家日志</a><i></i></li>
+        <li><cite></cite><a href="html/log/gameserver_log.html" target="rightFrame">游戏服日志</a><i></i></li>
+        <li><cite></cite><a href="html/log/match_log.html" target="rightFrame">匹配服日志</a><i></i></li>
+        <li><cite></cite><a href="html/log/master_log.html" target="rightFrame">Master日志</a><i></i></li>
+        <li><cite></cite><a href="html/log/client_log.html" target="rightFrame">客户端错误日志</a><i></i></li>
+        </ul>    
+    </dd>
+
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>数据统计
+    </div>
+        <ul class="menuson">
+        <li><cite></cite><a href="index.html" target="rightFrame">留存与活跃</a><i></i></li>
+        <li><cite></cite><a href="index.html" target="rightFrame">充值</a><i></i></li>
+        <li><cite></cite><a href="index.html" target="rightFrame">等级</a><i></i></li>
+        </ul>    
+    </dd>
+        
+    <dd>
+    <div class="title">
+    <span><img src="images/leftico01.png" /></span>Skynet
+    </div>
+        <ul class="menuson">
+        <li><cite></cite><a href="html/skynet/cluster_conf.html" target="rightFrame">集群管理</a><i></i></li>
+        <li><cite></cite><a href="html/skynet/service.html" target="rightFrame">主要服务</a><i></i></li>
+        <li><cite></cite><a href="html/skynet/all_service.html" target="rightFrame">所有服务</a><i></i></li>
+        <li><cite></cite><a href="html/skynet/db.html" target="rightFrame">查询数据库</a><i></i></li>
+        <li><cite></cite><a href="html/skynet/backup_db.html" target="rightFrame">备份数据库</a><i></i></li>
+        </ul>    
+    </dd>
+
+    </dd>   
+    
+    </dl>
+</body>
+    
+</html>

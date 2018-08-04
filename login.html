@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>欢迎登录后台管理系统</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="js/jquery.js"></script>
+<script src="js/cloud.js" type="text/javascript"></script>
+    <script src="html/util.js"></script>
+<script language="javascript">
+    $(function(){
+        $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+        $(window).resize(function(){  
+            $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+        }) 
+        for (var server in SERVER_CONF){
+            $("#server_list").append("<option value='"+server+"'>"+SERVER_CONF[server].desc+"</option>"); 
+        }
+        var server = GetCookie("server");
+        if (server) {
+            $("#server_list").val(server);
+        }
+    });  
+    function OnclickLogin(){
+        var server = $("#server_list").val();
+        SetCookie("server", server);
+        window.location = "main.html";
+    }
+</script> 
+
+</head>
+
+<body style="background-color:#1c77ac; background-image:url(images/light.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+
+
+
+    <div id="mainBody">
+      <div id="cloud1" class="cloud"></div>
+      <div id="cloud2" class="cloud"></div>
+    </div>  
+    
+    <div class="loginbody">
+    
+    <span class="systemlogo"></span> 
+       
+    <div class="loginbox">
+        <select id="server_list" class="loginselect">
+        <input id="loginbtn" type="button" class="loginbtn" value="登录"  onclick="OnclickLogin()"  />
+    </div>
+    
+	
+    
+</body>
+
+</html>
