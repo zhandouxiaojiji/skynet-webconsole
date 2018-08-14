@@ -8,6 +8,10 @@
     if(!CurServer()){
         window.location.href = "login.html"
     }
+    var ws = InitWS();
+    ws.onmessage = function(evt){
+        alert(evt);
+    }
 
     $(document).ready(function(){
     });

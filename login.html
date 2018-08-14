@@ -2,29 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>欢迎登录后台管理系统</title>
+<title>skynet后台管理</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript" src="js/jquery.js"></script>
 <script src="js/cloud.js" type="text/javascript"></script>
     <script src="html/util.js"></script>
 <script language="javascript">
     $(function(){
-        $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+        $('.loginbox').css({'position':'absolute','left':($(window).width()-370)/2});
         $(window).resize(function(){  
-            $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+            $('.loginbox').css({'position':'absolute','left':($(window).width()-370)/2});
         }) 
-        for (var server in SERVER_CONF){
-            $("#server_list").append("<option value='"+server+"'>"+SERVER_CONF[server].desc+"</option>"); 
-        }
+        $(".dfinput").css({
+            width : 250
+        });   
         var server = GetCookie("server");
         if (server) {
-            $("#server_list").val(server);
+            $("#servertext").val(server);
         }
     });  
     function OnclickLogin(){
-        var server = $("#server_list").val();
+        var server = $("#servertext").val();
         SetCookie("server", server);
-        window.location = "main.html";
+        // alert(server);
     }
 </script> 
 
@@ -41,12 +41,10 @@
     
     <span class="systemlogo"></span> 
        
-    <div class="loginbox">
-        <select id="server_list" class="loginselect">
-        <input id="loginbtn" type="button" class="loginbtn" value="登录"  onclick="OnclickLogin()"  />
-    </div>
-    
-	
+    <form class="loginbox" action="main.html">
+        <input id="servertext" autocomplete="true" type="text" class="dfinput" placeholder="host:port" value="" />
+        <input id="loginbtn" type="submit" class="loginbtn" value="登录"  onclick="OnclickLogin()"  />
+    </form>
     
 </body>
 

@@ -1,23 +1,15 @@
-var SERVER_CONF={
-    dev:{desc:"开发服",    url:"http://dev.zhongfq.com:10199"},
-    test:{desc:"测试服",    url:"http://dev.zhongfq.com:10197"},
-};
-
-function CallServer(cmd, data, func) {
-    var server = GetCookie("server");
-    if (!server){
-        alert("请重新登陆");
-        return;
+function InitWS(){
+    var ws = new WebSocket("ws://"+GetCookie("server"));
+    ws.onopen = function() {
+        // 发送 Hello 消息
+        ws.send(JSON.stringify({
+            id: 'Login'
+        }))
     }
-    var json = {cmd:cmd, data:JSON.stringify(data)};
-    $.ajax({
-        url: SERVER_CONF[server].url,
-        type: 'GET',
-        data:  json,
-        success: function (data) {
-            func(JSON.parse(data));
-        }
-    });
+    ws.onclose = function(evt) {  
+        alert("Connection closed."); 
+    }; 
+    return ws;
 }
 
 function GetCookie(c_name){
@@ -66,9 +58,6 @@ function getParam(paramName) {
 
 function CurServer(){
     return GetCookie("server");
-}
-function CurServerDesc() {
-    return SERVER_CONF[CurServer()].desc;
 }
 
 String.prototype.Format = function (args) {
