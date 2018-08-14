@@ -10,8 +10,13 @@
     }
     var ws = InitWS();
     ws.onmessage = function(evt){
-        alert(evt);
+        // alert(evt);
+        alert("登陆成功");
     }
+    ws.onclose = function(evt) {  
+        alert("无法连接到服务器!");
+        window.location.href = "login.html"
+    }; 
 
     $(document).ready(function(){
     });

@@ -3,7 +3,7 @@ function InitWS(){
     ws.onopen = function() {
         // 发送 Hello 消息
         ws.send(JSON.stringify({
-            id: 'Login'
+            id: 'c2s_login'
         }))
     }
     ws.onclose = function(evt) {  
