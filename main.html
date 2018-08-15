@@ -10,7 +10,7 @@
     }
     var ws = InitWs();
     ws.onopen = function() {
-        WsSend('login.c2s_login', {});
+        WsSend(ws, 'login.c2s_login', {});
     };
     ws.recv = function(event){
         // alert(evt);
