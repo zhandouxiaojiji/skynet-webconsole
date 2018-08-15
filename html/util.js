@@ -1,15 +1,22 @@
-function InitWS(){
+function InitWs(){
     var ws = new WebSocket("ws://"+GetCookie("server"));
-    ws.onopen = function() {
-        // 发送 Hello 消息
-        ws.send(JSON.stringify({
-            id: 'c2s_login'
-        }))
+    ws.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        var op = data.op;
+        var msg = data.msg;
+        ws.recv(op, msg);
     }
-    ws.onclose = function(evt) {  
-        alert("Connection closed."); 
+    ws.onclose = function(event) {  
+        // alert("Connection closed."); 
     }; 
     return ws;
+}
+
+function WsSend(ws, op, msg) {
+    ws.send(JSON.stringify({
+        op: op,
+        msg: msg
+    }));
 }
 
 function GetCookie(c_name){

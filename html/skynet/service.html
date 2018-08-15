@@ -10,6 +10,18 @@
 <script type="text/javascript">
     var service_list;
     var service_id_list = [];
+    var ws = InitWs();
+    ws.recv = function(op, msg){
+        switch(op){
+            case "skynet.s2c_all_service": 
+                service_list = msg.service_list;
+                Refresh(); 
+                break;
+        }
+    }
+    ws.onopen = function(event) {
+        GetServiceList();
+    }
     function UpdateServiceIdList() {
         service_id_list = [];
         for(var i in service_list){
@@ -20,10 +32,7 @@
         }
     }
     function GetServiceList() {
-        CallServer("service_list", {}, function(data) {
-            service_list = data.service_list;
-            Refresh();
-        });
+        WsSend(ws, "skynet.c2s_all_service", {});
     }
     function GC(i) {
         CallServer("service_gc", {
@@ -76,7 +85,6 @@
     }
 
     $(document).ready(function(){
-        GetServiceList();
 
     });
 

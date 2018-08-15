@@ -8,14 +8,17 @@
     if(!CurServer()){
         window.location.href = "login.html"
     }
-    var ws = InitWS();
-    ws.onmessage = function(evt){
+    var ws = InitWs();
+    ws.onopen = function() {
+        WsSend('login.c2s_login', {});
+    };
+    ws.recv = function(event){
         // alert(evt);
-        alert("登陆成功");
+        // alert(event.data);
     }
-    ws.onclose = function(evt) {  
+    ws.onclose = function(event) {  
         alert("无法连接到服务器!");
-        window.location.href = "login.html"
+        window.location.href = "login.html";
     }; 
 
     $(document).ready(function(){
