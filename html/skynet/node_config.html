@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $(".select3").uedSelect({
+            width : 280
+        });      
+        $(".dfinput").css({
+            width : 200
+        });    
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });
+        var server_id = getParam("server_id");
+        $("#server_id").val(server_id);
+        if(server_id != ""){
+            GetServerData();
+        }
+    });
+
+
+    function GetServerData() {
+        CallServer("get_server_data", {
+            "server_id":$("#server_id").val(),
+        }, function(data) {
+            if(data.err) {
+                alert(data.err);
+                return;
+            }
+            $('#node_name').text(data.server_name);
+            $('#online_count').text(data.online_count);
+
+        });
+        
+    }
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+    
+
+
+    <ul class="forminfo">
+         <li><label style="font-size:20px">基本信息</label></li>
+         <li><label>节点名称</label><label style="color:gray" id="node_name"></label></li>
+
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>
