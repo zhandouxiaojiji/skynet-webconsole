@@ -12,40 +12,44 @@
 <script src="../util.js"></script>
 
 <script type="text/javascript">
+    var ws;
+    function GetNodeConfig() {
+        WsSend(ws, "skynet.c2s_node_config", {});
+    }
+
+    function Refresh(conf) {
+        $("#proj_name").text(conf.proj_name);
+        $("#clustername").text(conf.clustername);
+        $("#pnet_addr").text(conf.pnet_addr);
+        $("#inet_addr").text(conf.inet_addr);
+        $("#pid").text(conf.pid);
+        $("#profile").text(conf.profile);
+        $("#gate").text(conf.gate);
+        $("#webconsole").text(conf.webconsole);
+        $("#mongo").text(conf.mongo);
+        $("#redis").text(conf.redis);
+        $("#mysql").text(conf.mysql);
+        if(conf.alert_enable) {
+            $("#alert").text('已开启');
+        }else{
+            $("#alert").text('未开启');
+        }
+
+    }
 
     $(document).ready(function(){
-        $(".select3").uedSelect({
-            width : 280
-        });      
-        $(".dfinput").css({
-            width : 200
-        });    
-        $(".textinput").css({
-            width : 800,
-            height : 400
-        });
-        var server_id = getParam("server_id");
-        $("#server_id").val(server_id);
-        if(server_id != ""){
-            GetServerData();
+        ws = InitWs();
+        ws.recv = function(op, msg){
+            switch(op){
+                case "skynet.s2c_node_config": 
+                    Refresh(msg); 
+                    break;
+            }
+        }
+        ws.onopen = function(event) {
+            GetNodeConfig();
         }
     });
-
-
-    function GetServerData() {
-        CallServer("get_server_data", {
-            "server_id":$("#server_id").val(),
-        }, function(data) {
-            if(data.err) {
-                alert(data.err);
-                return;
-            }
-            $('#node_name').text(data.server_name);
-            $('#online_count').text(data.online_count);
-
-        });
-        
-    }
 
 </script>
 
@@ -61,7 +65,18 @@
 
     <ul class="forminfo">
          <li><label style="font-size:20px">基本信息</label></li>
-         <li><label>节点名称</label><label style="color:gray" id="node_name"></label></li>
+         <li><label>项目</label><label style="color:gray" id="proj_name"></label></li>
+         <li><label>节点</label><label style="color:gray" id="clustername"></label></li>
+         <li><label>外网ip</label><label style="color:gray" id="pnet_addr"></label></li>
+         <li><label>内网ip</label><label style="color:gray" id="inet_addr"></label></li>
+         <li><label>进程</label><label style="color:gray" id="pid"></label></li>
+         <li><label>性能</label><label style="color:gray" id="profile"></label></li>
+         <li><label>监听端口</label><label style="color:gray" id="gate"></label></li>
+         <li><label>后台端口</label><label style="color:gray" id="webconsole"></label></li>
+         <li><label>mongo</label><label style="color:gray" id="mongo"></label></li>
+         <li><label>redis</label><label style="color:gray" id="redis"></label></li>
+         <li><label>mysql</label><label style="color:gray" id="mysql"></label></li>
+         <li><label>警报</label><label style="color:gray" id="alert"></label></li>
 
     </ul>
 

@@ -5,7 +5,28 @@
 <title>无标题文档</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.0.57/dingtalk.open.js"></script>
+<!-- <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.0.8/dingtalk.open.js"></script> -->
+<script type="text/javascript">
+	// import * as dd from 'dingtalk-jsapi';
+	dd.ready(function(){
+    dd.device.notification.confirm({
+    message: "你爱我吗",
+    title: "提示",
+    buttonLabels: ['爱', '不爱'],
+    onSuccess : function(result) {
+        //onSuccess将在点击button之后回调
+        /*
+        {
+            buttonIndex: 0 //被点击按钮的索引值，Number类型，从0开始
+        }
+        */
+    },
+    onFail : function(err) {}
+    });
+});
 
+</script>
 </head>
 
 
