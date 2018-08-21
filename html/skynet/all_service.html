@@ -34,28 +34,13 @@
     function GetServiceList() {
         WsSend(ws, "skynet.c2s_all_service", {});
     }
-    function GC(i) {
-        CallServer("service_gc", {
-            "addr":service_list[i].addr
-        }, function(data) {
-            alert("GC完成");
-            GetServiceList();
-        });
-    }
-    function AllGC() {
-        CallServer("service_gc_all", {}, function(data) {
-            alert("所有服务GC完成");
-            GetServiceList();
-        });
-    }
 
-    function Refresh(selector) {
+    function Refresh() {
         $(".tablelist td").empty();
         for (i in service_list){
             service = service_list[i]
 
             var row = '<tr id="row_'+i+'">';
-            row += '<td><label><input id="checkbox_'+service.id+'" type="checkbox" value="">';
             row += '<td><label>'+service.address+'</label></td>';
 
             
@@ -74,13 +59,8 @@
 
             row += '</tr>';
 
-            if(!selector || (selector == "select_all")||(selector == "select_runing" && service.gameservice)||
-                (selector == "select_not_merge" && service.merge == 0)||(selector == "select_merge" && service.merge != 0)){
-                $(".tablelist tr:last").after(row);
-                if(selector){
-                    $("#checkbox_"+service.id).attr("checked",true);
-                }
-            }
+            $(".tablelist tr:last").after(row);
+          
         }
     }
 
@@ -98,20 +78,9 @@
 
     <div class="rightinfo">
     
-<!--     <div class="tools">
-    
-        <ul class="toolbar">
-        <li class="click" id="refresh_service" onclick="GetServiceList()"><span><img src="../../images/button/refresh.png" /></span>刷新</li>
-        <li class="click" id="gc_all_service" onclick="AllGC()"><span><img src="../../images/button/reload.png" /></span>GC</li>
-        </ul>
-    
-    </div>
-     -->
-    
     <table class="tablelist">
         <thead>
         <tr>
-        <th><input name="" type="checkbox" value="" checked="checked"/></th>
         <th>地址</th>
         <th>描述</th>
         <th>内存</th>
@@ -125,22 +94,6 @@
            
         </tbody>
     </table>
-    
-   
-<!--     <div class="pagin">
-        <div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
-        <ul class="paginList">
-        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-        <li class="paginItem"><a href="javascript:;">1</a></li>
-        <li class="paginItem current"><a href="javascript:;">2</a></li>
-        <li class="paginItem"><a href="javascript:;">3</a></li>
-        <li class="paginItem"><a href="javascript:;">4</a></li>
-        <li class="paginItem"><a href="javascript:;">5</a></li>
-        <li class="paginItem more"><a href="javascript:;">...</a></li>
-        <li class="paginItem"><a href="javascript:;">10</a></li>
-        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
-        </ul>
-    </div> -->
     
     
     <div class="tip">
