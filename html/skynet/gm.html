@@ -35,13 +35,17 @@
     ws.recv = function(op, msg){
         switch(op){
             case "skynet.s2c_run_gm": 
-                $('#ret').val(msg.ret);
+                $('#ret').val($('#ret').val()+msg.ret+"\n");
                 break;
         }
     }
 
     function RunGm() {
     	WsSend(ws, "skynet.c2s_run_gm", {cmd:$('#cmd').val()});
+    }
+
+    function Clear() {
+    	$('#ret').val('');
     }
 
 </script>
@@ -56,7 +60,8 @@
     
     <ul class="forminfo">
     <li><label>操作</label>
-    <input name="" type="button" class="btn" value="执行" onclick="RunGm()" /></li>
+    <input name="" type="button" class="btn" value="执行" onclick="RunGm()" />
+	<input name="" type="button" class="btn" value="清除" onclick="Clear()" /></li>
     <li><label>命令</label><input id="cmd" type="text" class="dfinput" placeholder="mod cmd ..." value="skynet " /></li>
     <li><label>输出</label><textarea id="ret" cols="" rows="" class="textinput"></textarea></li>
     </ul>
