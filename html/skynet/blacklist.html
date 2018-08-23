@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../editor/kindeditor.js"></script>
+<script src="../util.js"></script>
+
+<script type="text/javascript">
+    function GetList() {
+        WsSend(ws, "skynet.c2s_get_blacklist");  
+    }
+
+    function SetList() {
+        WsSend(ws, "skynet.c2s_set_blacklist", {list:$('#list').val()});
+    }
+
+    var ws = InitWs();
+    ws.recv = function(op, msg){
+        switch(op){
+            case "skynet.s2c_get_blacklist": 
+                $('#list').val(msg.list);
+                break;
+            case "skynet.s2c_set_blacklist":
+                alert("设置成功!");
+                break;
+        }
+    }
+    ws.onopen = function(event) {
+        GetList();
+    }
+
+    $(document).ready(function(){
+        $(".textinput").css({
+            width : 800,
+            height : 400
+        });
+    });
+
+
+
+</script>
+
+
+</head>
+
+
+<body>
+    
+    <div class="formbody">
+
+    <ul class="forminfo">
+    <li><label>操作</label><input name="" type="button" class="btn" onclick="SetList()" value="修改"/></li>
+
+    <li><label>黑名单</label><textarea id="list" cols="" rows="" class="textinput"></textarea></li>
+    </ul>
+
+    </div>
+
+
+
+
+</body>
+
+</html>
