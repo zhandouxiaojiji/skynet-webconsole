@@ -18,7 +18,7 @@
     }
 
     function Refresh(conf) {
-        $("#proj_name").text(conf.proj_name);
+        $("#proj").text(conf.proj);
         $("#clustername").text(conf.clustername);
         $("#pnet_addr").text(conf.pnet_addr);
         $("#inet_addr").text(conf.inet_addr);
@@ -65,7 +65,7 @@
 
     <ul class="forminfo">
          <li><label style="font-size:20px">基本信息</label></li>
-         <li><label>项目</label><label style="color:gray" id="proj_name"></label></li>
+         <li><label>项目</label><label style="color:gray" id="proj"></label></li>
          <li><label>节点</label><label style="color:gray" id="clustername"></label></li>
          <li><label>外网ip</label><label style="color:gray" id="pnet_addr"></label></li>
          <li><label>内网ip</label><label style="color:gray" id="inet_addr"></label></li>
