@@ -20,6 +20,12 @@
         if (server) {
             $("#servertext").val(server);
         }
+        $('#servertext').bind('keyup', function(event) {
+            if (event.keyCode == "13") {
+                //回车执行查询
+                OnclickLogin();
+            }
+        }); 
     });  
     function OnclickLogin(){
         var server = $("#servertext").val();
